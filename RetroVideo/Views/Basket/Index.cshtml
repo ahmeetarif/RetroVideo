@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var basketItems = new List<Film>();
+
+    var basketFromSession = Context.Session.Get("BasketItems");
+
+    if (basketFromSession != null)
+    {
+        var basketItemsAsString = System.Text.Encoding.UTF8.GetString(basketFromSession);
+
+        if (!string.IsNullOrWhiteSpace(basketItemsAsString))
+        {
+            basketItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Film>>(basketItemsAsString);
+        }
+    }
+}
+
+<a href="/">Reserveren</a> <a href="/Klant">Klant</a>
+
+<h1>Mandje</h1>
+
+<form method="post" action="@Url.Action("RemoveFromBasket", "Basket")">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Titel</th>
+                <th scope="col">Prijs</th>
+                <th scope="col">
+                    <button class="btn btn-danger">Verwijderen</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in basketItems)
+            {
+                <tr>
+                    <th scope="row">@item.Titel</th>
+                    <td>@item.Prijs</td>
+                    <td>
+                        <input type="checkbox" name="ids" value="@item.Id" />
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <th scope="row">Total</th>
+                <td>@basketItems.Sum(x => x.Prijs)</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</form>

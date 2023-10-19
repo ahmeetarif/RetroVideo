@@ -1,0 +1,25 @@
+﻿@model Film
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="/">Reserveren</a>
+
+<h2>@Model.Titel</h2>
+<div>
+    <img src="~/film_images/@(Model.Id).jpg" />
+</div>
+<label class="fw-bold">Prijs : @Model.Prijs</label>
+<label>Voorraad : @Model.Voorraad</label>
+<label>Gereserveerd : @Model.Gereserveerd</label>
+
+@if (true)
+{
+    @using (Html.BeginForm("AddToBasket", "Basket", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Id)
+        <button class="btn btn-primary" type="submit">In Mandje</button>
+    }
+
+}

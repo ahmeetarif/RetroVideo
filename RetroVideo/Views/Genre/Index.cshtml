@@ -1,0 +1,42 @@
+﻿@model Tuple<List<Genre>, List<Film>>
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+<h2>Genres</h2>
+
+@foreach (var item in Model.Item1)
+{
+    if (Context.Session.GetInt32("SelectedGenreId") != item.Id)
+    {
+        <a href="/Genre/Index/@item.Id">@item.Naam</a>
+    }
+    else
+    {
+        <label>@item.Naam</label>
+    }
+}
+
+
+@if (Model.Item2.Any())
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+        @foreach (var item in Model.Item2)
+        {
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="~/film_images/@(item.Id).jpg" />
+                    <div class="card-body">
+                        <h3>@item.Titel</h3>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="/Films/Index/@item.Id" class="btn btn-sm btn-outline-secondary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

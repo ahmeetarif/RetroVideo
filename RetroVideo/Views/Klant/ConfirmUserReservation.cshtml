@@ -1,0 +1,35 @@
+﻿@model long
+@{
+    ViewData["Title"] = "ConfirmUserReservation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var basketItems = Context.Session.Get("BasketItems");
+    int totalFilmsInBasket = 0;
+
+    if (basketItems != null && basketItems.Length > 0) {
+        var basketItemAsString = System.Text.Encoding.UTF8.GetString(basketItems);
+
+        if (!string.IsNullOrWhiteSpace(basketItemAsString))
+        {
+            var parsedArray = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Film>>(basketItemAsString);
+
+            totalFilmsInBasket = parsedArray.Count;
+        }
+
+    }
+}
+
+<a href="/">Reserveren</a> <a href="/Basket">Mandje</a> <a href="/Klant">Klant</a>
+
+<h1>Bevestigen</h1>
+
+<div>
+    <label>@(totalFilmsInBasket) film(s) voor Inge Heiremans</label>
+</div>
+<div>
+    @using (Html.BeginForm("ConfirmUserReservationPOST", "Klant", FormMethod.Post))
+    {
+        <input type="hidden" name="userId" value="@Model" />
+        <button type="submit">Bevestigen</button>
+    }
+</div>

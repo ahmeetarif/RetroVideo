@@ -1,0 +1,47 @@
+﻿@model List<Klanten>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="/">Reserveren</a> <a href="/Basket">Mandje</a>
+
+<h1>Klant</h1>
+
+<form asp-action="Index" asp-controller="Klant" method="get">
+    <div class="form-group">
+        <label for="exampleInputEmail1">Familienaam bevat</label>
+        <input type="text" value="@(Context.Request.Query["searchQuery"].ToString())" class="form-control" name="searchQuery">
+    </div>
+    <br />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Zoeken</button>
+    </div>
+</form>
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Naam</th>
+                <th scope="col">Straat - Huisnummer</th>
+                <th scope="col">Postcode</th>
+                <th scope="col">Gemeente</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">
+                        <a href="/Klant/ConfirmUserReservation/@item.Id">@item.Voornaam @item.Familienaam</a>
+                    </th>
+                    <td>@item.Straat</td>
+                    <td>@item.Postcode</td>
+                    <td>@item.Gemeente</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
